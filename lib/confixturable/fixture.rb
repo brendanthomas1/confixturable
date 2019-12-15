@@ -20,7 +20,10 @@ module Confixturable
     attr_reader :file, :options
 
     def read(file, format)
-      File.open("#{file}.#{format}.erb").read
+      path = "spec/fixtures/#{file}.#{format}.erb"
+      File.open(path).read
+    rescue Errno::ENOENT
+      raise MissingFileError, "The file \"#{path}\" could not be found"
     end
   end
 end

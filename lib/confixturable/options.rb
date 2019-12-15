@@ -9,19 +9,20 @@ module Confixturable
       @format = format
     end
 
-    # should this default to nil or raise if not found
+    # should this default to nil or raise if not found?
     def fetch(name, default = nil)
       value = options.fetch(name, default)
+      return value.to_json if json?
 
-      return_formatted_value(value)
+      value
     end
 
     private
 
     attr_reader :options, :format
 
-    def return_formatted_value(value)
-      format == :json ? value.to_json : json
+    def json?
+      format == :json
     end
   end
 end

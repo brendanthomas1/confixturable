@@ -4,8 +4,7 @@ require 'confixturable/fixture'
 require 'confixturable/version'
 
 module Confixturable
-  class Error < StandardError; end
-  # Your code goes here...
+  class MissingFileError < StandardError; end
 
   class << self
     def create(file, format: :json, options: {})
