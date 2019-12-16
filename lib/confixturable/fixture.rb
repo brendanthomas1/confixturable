@@ -6,9 +6,10 @@ require 'confixturable/options'
 
 module Confixturable
   class Fixture < ERB
-    def initialize(file, format, options)
+    def initialize(filename, format, options)
+      @format = format
+      @file = read(filename)
       @options = Options.new(options, format)
-      @file = read(file, format)
     end
 
     def result
@@ -17,10 +18,14 @@ module Confixturable
 
     private
 
-    attr_reader :file, :options
+    attr_reader :file, :format, :options
 
-    def read(file, format)
-      path = "spec/fixtures/#{file}.#{format}.erb"
+    def file_path(filename)
+      "#{Confixturable.configuration.fixture_path}/#{filename}.#{format}.erb"
+    end
+
+    def read(filename)
+      path = file_path(filename)
       File.open(path).read
     rescue Errno::ENOENT
       raise MissingFileError, "The file \"#{path}\" could not be found"

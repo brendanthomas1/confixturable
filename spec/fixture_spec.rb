@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Confixturable::Fixture do
-  let(:subject) { described_class.new filename, format, options }
+  subject { described_class.new filename, format, options }
   let(:filename) { 'test' }
   let(:options) { { is_test: true } }
   let(:format) { :json }
@@ -12,6 +12,14 @@ RSpec.describe Confixturable::Fixture do
 
       it 'raises an error' do
         expect { subject }.to raise_error Confixturable::MissingFileError
+      end
+    end
+
+    context 'when a nested filepath is given' do
+      let(:filename) { 'nested_directory/alternate_fixture' }
+
+      it 'finds the file' do
+        expect { subject }.not_to raise_error
       end
     end
   end

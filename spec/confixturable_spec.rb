@@ -5,6 +5,20 @@ RSpec.describe Confixturable do
     expect(Confixturable::VERSION).not_to be nil
   end
 
+  describe '.configure' do
+    before do
+      Confixturable.configure do |config|
+        config.fixture_path = 'spec/fixtures/nested_directory'
+      end
+    end
+
+    it 'finds the fixture in the configurable path' do
+      expect(described_class.create('alternate_fixture')).to be_a String
+    end
+
+    after { Confixturable.configuration = Confixturable::Configuration.new }
+  end
+
   describe '.create' do
     it 'returns a string' do
       expect(described_class.create('test')).to be_a String
